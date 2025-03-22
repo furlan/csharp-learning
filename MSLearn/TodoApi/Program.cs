@@ -11,10 +11,10 @@ app.MapGet("/todoitems/complete", async (TodoDb db) =>
     await db.Todos.Where(t => t.IsComplete).ToListAsync());
 
 app.MapGet("/todoitems/{id}", async (int id, TodoDb db) =>
-    await db.Todos.FindAsync(id) )
+    await db.Todos.FindAsync(id) 
         is Todo todo
             ? Results.Ok(todo)
-            : Results.NotFound()
+            : Results.NotFound());
 
 app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
 {
@@ -24,7 +24,7 @@ app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
     return Results.Created($"/todoitems/{todo.Id}", todo);
 });
 
-app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, Tododb db) => 
+app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, TodoDb db) => 
 {
     var todo = await db.Todos.FindAsync(id);
 
@@ -35,18 +35,18 @@ app.MapPut("/todoitems/{id}", async (int id, Todo inputTodo, Tododb db) =>
 
     await db.SaveChangesAsync();
 
-    return Result.NoContent();
+    return Results.NoContent();
 });
 
 app.MapDelete("/todoitems/{id}", async (int id, TodoDb db) => 
 {
-    if (await db.Todos.FindAsync(id) is todo todo)
+    if (await db.Todos.FindAsync(id) is Todo todo)
     {
         db.Todos.Remove(todo);
         await db.SaveChangesAsync();
         return Results.NoContent();
     }
     return Results.NotFound();
-})
+});
 
 app.Run();
