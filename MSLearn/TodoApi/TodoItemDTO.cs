@@ -6,5 +6,5 @@ public class TodoItemDTO
 
     public TodoItemDTO() {}
     public TodoItemDTO(Todo todoItem) =>
-    (Id, Name, IsComplete) = (todoItem.id, todoItem.Name, todoItem.IsComplete);
+    (Id, Name, IsComplete) = (todoItem.Id, todoItem.Name, todoItem.IsComplete);
 }
