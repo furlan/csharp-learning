@@ -25,7 +25,7 @@ if (app.Environment.IsDevelopment())
         config.DocExpansion = "list";
     });
 }
-var todoItems = app.MapGroup("/todoitems");
+RouteGroupBuilder todoItems = app.MapGroup("/todoitems");
 
 todoItems.MapGet("/", GetAllTodos);
 todoItems.MapGet("/complete", GetCompleteTodos);
@@ -34,14 +34,16 @@ todoItems.MapPost("/", CreateTodo);
 todoItems.MapPut("/{id}", UpdateTodo);
 todoItems.MapDelete("/{id}", DeleteTodo);
 
+app.Run();
+
 static async Task<IResult> GetAllTodos(TodoDb db)
 {
-    return TypedResults.Ok(await db.Todos.ToListAsync());
+    return TypedResults.Ok(await db.Todos.Select(x => new TodoItemDTO(x)).ToArrayAsync());
 }
 
 static async Task<IResult> GetCompleteTodos(TodoDb db)
 {
-    return TypedResults.Ok(await db.Todos.Where(t => t.IsComplete).ToListAsync());
+    return TypedResults.Ok(await db.Todos.Where(t => t.IsComplete).Select(x => new TodoItemDTO(x)).ToListAsync());
 }
 
 static async Task<IResult> GetTodo(int id, TodoDb db)
@@ -86,4 +88,3 @@ static async Task<IResult> DeleteTodo(int id, TodoDb db)
     return Results.NotFound();
 }
 
-app.Run();
