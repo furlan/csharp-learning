@@ -17,7 +17,8 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
-app.UseAuthorization();
+// This app don't use authorization
+// app.UseAuthorization();
 
 app.MapStaticAssets();
 app.MapRazorPages()
